@@ -2,10 +2,11 @@ require 'thread'
 
 $printer = []
 
+
 class RainbowThread
 
   def initialize
-    start = rand(9)
+    start = rand(5)
     @input = start
     @old_input = start
     @diff = 0
@@ -35,7 +36,7 @@ class RainbowThread
     @t2 = Thread.new do
       while @life > 0
         @old_input = @input
-        @input = rand(9)
+        @input = rand(5)
         @diff = (@input - @old_input) * 8
         sleep [2,3,5].sample
       end
@@ -48,11 +49,17 @@ class RainbowThread
     @t2.kill
   end
 
+  def alive?
+    @t1.alive? && @t2.alive?
+  end
+
 end
 
-7.times do
-  RainbowThread.new
-end
+thread_array = []
+
+4.times { thread_array << RainbowThread.new }
+
+start_time = Time.now
 
 while true
   printing = []
@@ -64,8 +71,12 @@ while true
   puts
   $printer = []
   sleep 0.03
+  break if (thread_array.count &:alive?) < 4
 end
 
-
+puts
+puts
+puts "#{Time.now - start_time} is your score"
+puts
 
 
