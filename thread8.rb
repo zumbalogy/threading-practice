@@ -5,13 +5,13 @@ $printer = []
 class RainbowThread
 
   def initialize
-    start = 0
+    start = rand(9)
     @input = start
     @old_input = start
     @diff = 0
     @arrow_counter = 0
-    @life = (Random.rand * 300) + 30
-    @color = (0..9).to_a.sample
+    @life = rand(300) + 30
+    @color = rand(9)
 
     @t1 = Thread.new do
       while @life > 0
@@ -35,7 +35,7 @@ class RainbowThread
     @t2 = Thread.new do
       while @life > 0
         @old_input = @input
-        @input = (0..9).to_a.sample
+        @input = rand(9)
         @diff = (@input - @old_input) * 8
         sleep [2,3,5].sample
       end
@@ -55,7 +55,7 @@ end
 end
 
 while true
-  if Random.rand > 0.97
+  if Random.rand > 0.968
     RainbowThread.new
   end
   printing = []
