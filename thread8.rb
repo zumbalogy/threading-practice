@@ -5,7 +5,7 @@ $printer = []
 class RainbowThread
 
   def initialize
-    start = rand(81)
+    start = 0
     @input = start
     @old_input = start
     @diff = 0
@@ -23,7 +23,7 @@ class RainbowThread
           @diff += 1
           cursor = '/'
         end
-        space_count = @input - @diff
+        space_count = (@input * 8) + (8 - @diff)
         $printer << [space_count, @color, cursor]
         sleep 0.03
         @arrow_counter += 1
@@ -35,8 +35,8 @@ class RainbowThread
     @t2 = Thread.new do
       while @life > 0
         @old_input = @input
-        @input = rand(81)
-        @diff = @input - @old_input
+        @input = (0..9).to_a.sample
+        @diff = (@input - @old_input) * 8
         sleep [2,3,5].sample
       end
       self.stop
@@ -62,7 +62,7 @@ while true
   $printer.each do |item|
     printing[item.first] = "\033[0;3#{item[1]}m#{item.last}\033[0m"
   end
-  printing.map! {|x| x.nil? ? ' ' : x}
+  printing.map! { |x| x.nil? ? ' ' : x }
   print printing.join
   puts
   $printer = []
