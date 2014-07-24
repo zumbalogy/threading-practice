@@ -67,7 +67,7 @@ end
 
 thread_array = []
 
-4.times { thread_array << RainbowThread.new }
+5.times { thread_array << RainbowThread.new }
 
 start_time = Time.now
 
@@ -81,7 +81,7 @@ while true
   puts
   $printer = []
   sleep 0.03
-  break if (thread_array.count &:alive?) < 4
+  # break if (thread_array.count &:alive?) < 5
 end
 
 puts
