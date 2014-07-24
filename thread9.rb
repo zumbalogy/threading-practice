@@ -2,6 +2,9 @@ require 'thread'
 
 $printer = []
 
+$positions = []
+
+5.times {$positions << Mutex.new}
 
 class RainbowThread
 
@@ -35,10 +38,17 @@ class RainbowThread
 
     @t2 = Thread.new do
       while @life > 0
-        @old_input = @input
-        @input = rand(5)
-        @diff = (@input - @old_input) * 8
-        sleep [2,3,5].sample
+        try = $positions.sample {|m| m.locked? == false}
+        try = $positions.index(try)
+        if $positions[try].try_lock
+          @old_input = @input
+          @input = try
+          @diff = (@input - @old_input) * 8
+          sleep 0.99
+          $positions[try].unlock
+          sleep 0.03
+          @life += 300
+        end
       end
       self.stop
     end
