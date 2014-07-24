@@ -67,7 +67,7 @@ end
 
 thread_array = []
 
-5.times { thread_array << RainbowThread.new }
+4.times { thread_array << RainbowThread.new }
 
 start_time = Time.now
 
